@@ -1,0 +1,12 @@
+# Executables
+*.exe
+*.cof
+*.bin
+*.elf
+*.o
+
+# IDE configurations
+.idea
+.vscode
+!.vscode/settings.json
+!.vscode/extensions.json
