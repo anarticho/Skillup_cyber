@@ -130,4 +130,7 @@ and this [one too](https://ir0nstone.gitbook.io/notes/other/pwntools/introductio
 # 15/07/24
 - Start write4 challenge
 - NOTES_07_03_write.md
+- For the solution using binject within .sh script, the script shall have been allowed to execute using:
+> chmod +x le_script
+- write4 solution.
 
