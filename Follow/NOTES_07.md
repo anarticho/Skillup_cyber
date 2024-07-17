@@ -119,3 +119,6 @@ Les points suivants font référence à des documents, c'est pas pour des prunes
 - Review de toutes les notes.
 - Traduction à français.
 - Clean NOTES.
+- https://www.youtube.com/watch?v=hhu7vhmuISY
+
+- rop challenge
