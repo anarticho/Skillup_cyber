@@ -11,12 +11,11 @@ un site chinois, de très très bon liens.
 
 # 27/06/24
 - [Binary Injection](https://www.youtube.com/watch?v=A6EKDAKBXPs)
-- updated NOTES/corw_process_injection.md
+- updated NOTES
 - Reception STM32F7 + NAND Flash
 
 # 28/06/24
 - [Overflow Exploit](https://www.youtube.com/watch?v=6sUd3AA7Q50)
 - https://www.youtube.com/watch?v=RU5vUIl1vRs
 - https://ropemporium.com/
-> Going to GDP-peta and ROP emporium challenges.
-- [](./NOTES/crow_buffer_overflow.md)
+> C'est parti avec GDP-peta and ROP emporium challenges.
