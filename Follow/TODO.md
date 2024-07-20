@@ -6,3 +6,6 @@
 - [Malware Analysis](https://github.com/RPISEC/Malware)
 - References from https://blog.csdn.net/2301_76168381/article/details/136567947
 - APC queue injection
+- https://www.youtube.com/watch?v=6Dc8i1NQhCM
+- https://www.youtube.com/@jeFF0Falltrades/videos
+	- https://www.youtube.com/watch?v=ZmPArvsSii4

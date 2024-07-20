@@ -121,4 +121,21 @@ Les points suivants font référence à des documents, c'est pas pour des prunes
 - Clean NOTES.
 - https://www.youtube.com/watch?v=hhu7vhmuISY
 
-- rop challenge
+# 18/07/24
+- Vieil écran bleu, la WSL s'est corrompue.. Heuresement il y a les backup :3
+- Le backup permet juste de récupérer les fichiers de home/..., parce que le `wsl --import` fonctionne pas trop trop.
+- Du coup:
+1. Dans *Programmes et fonctionnalités* > *Activer ou désactiver des fonctionnalités de Windows* > Décocher *Sous-système Windows pour Linux* > Redémmarrer.
+2. Réinstaller WSL (recocher).
+3. Installer kali linux avec `wsl --install --distribution kali-linux`
+4. Enlever le message de base avec le `touch`
+5. Installer:
+	- `sudo apt update` pour actualiser les DNS.
+	- `sudo apt install build-essential` pour installer gcc, g++ et make.
+	- `sudo apt install gdb` pour installer gdb (le debugger).
+	- **.bashrc** et **.tgdbinit** depuis le backup *.tar*. 
+	- https://github.com/ficoos/tgdbdb
+	- https://github.com/anarticho
+
+# 19/07/24
+- On commence le challenge ROP numero 5: badchar.
