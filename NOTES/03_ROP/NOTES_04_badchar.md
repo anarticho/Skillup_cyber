@@ -60,6 +60,10 @@ Le résultat serait le suivant:
 Ce dernier élément de résultat, couplé au paramètre *optionnel* [lc_opt] permettrait à l'utilisateur d'intégrer les valeurs d'offset directement dans sa chaîne ROP.
 
 [COMMIT]()
++ résultat 
+//TODO
+
+Il ne nous reste maintenant plus qu'à identifier les ROP gadgets de l'executable afin de réaliser la chaîne ROP pour l'exploit. 
 
 ## Les gadgets
 
