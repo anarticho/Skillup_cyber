@@ -69,7 +69,9 @@ Le gadget `bextr` contient les instructions `pop`, ce qui convient parfaitement 
 >   0x000000000040062b <+3>:     pop    %rcx            <br>
 >   0x000000000040062c <+4>:     add    $0x3ef2,%rcx    <br>
 
-Néanmoins l'instruction `add` vient quelque peu perturber le *flow* de l'exploit, et oblige à préalablement calculer la valeur **source** (contenue dans `%rcx`). Dans l'idée, la valeur de **control** du registre `%rdx` 
+L, la valeur de **control** du registre `%rdx` serait fixée à **0x4000**, afin de récupérer l'ensemble des bytes 
+
+Néanmoins l'instruction `add` vient quelque peu perturber le *flow* de l'exploit, et oblige à préalablement calculer la valeur **source** (contenue dans `%rcx`). 
 
 ---
 <br>
