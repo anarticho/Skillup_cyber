@@ -139,3 +139,23 @@ Les points suivants font référence à des documents, c'est pas pour des prunes
 
 # 19/07/24
 - On commence le challenge ROP numero 5: badchar.
+
+# 20/07/24
+- modif NOTES_04_badchar.md
+- notes en français
+- TODO from ROP's notes
+
+# 21/07/24
+- 'bd' flag on binject
+- quasiment fini le **badchars** challenge, mais problème avec une addresse qui contient un badchar, voir les derniers paragraphes de **## La solution**
+
+# 22/07/24
+Modification binject:
+- [x] `-x64` -> `-a` pour addresse
+
+# 26/07/24
+Modification binject:
+- [cb] to check for bad characters.
+- [bd] to produce files to escape bad characters.
+
+ROP badchar finished -> **NOTES_04_badchar.md**

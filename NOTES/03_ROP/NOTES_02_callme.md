@@ -33,9 +33,9 @@ C'est très important de comprendre que le code pour ces fonctions externes (ave
 
 Queqlues clarifications sur ces sections;
 
-Premièrement oublions complètement la section **.got** pour nous concentrer sur la **.got.plt** (//TODO éclaircir pourquoi). 
+Premièrement oublions complètement la section **.got**, qui contient les addresses des variables globales, qui n'ont strictement rien à voir avec le **PLT**. C'est uniquement la section **.got.plt** qui va nous intéresser. 
 
-Secondement, cette section est utilisée et modifiée par les instructions de résolution de **.plt**. D'ailleurs, pour chaque élément PLT[N], il existe une addresse relative dans la section **.got.plt**.
+Cette dernière est utilisée et modifiée par les instructions de résolution de **.plt**. D'ailleurs, pour chaque élément PLT[N], il existe une addresse relative dans la section **.got.plt**.
 
 Ci-dessous son organisation en mémoire, sachant que ce sont des addresses,leur taille effective est de 8 bytes; donc les offsets sont 0x00, *0x08*, *0x10*, *0x18* etc...:
 - *GOT[0]*: contient la première addresse de la section **.dynamic**, qui contient l'information basique requise par le **dynamic linker**, comme l'addresse de la table de symboles, celle de ré-allocation etc...
@@ -95,8 +95,7 @@ Aussi, ces fonctions nécessitent trois arguments (comme nous pouvons le constat
 > 0x000000000040093e <+2>:&emsp;	pop    %rdx&emsp; 	// for 0xd00df00dd00df00d <br>
 > 0x000000000040093f <+3>:&emsp;	ret
 
-Avec ça, nous n'avons même pas besoin d'utiliser **ropper**. Aussi, l'énonce de ROP emporium donne une information particulièrement intéressante vis à vis de l'architecture **x64**, à savoir que les arguments doivent être de 16 bytes, soit 128 bits. 
-**TODO WHYYYY!?**
+Avec ça, nous n'avons même pas besoin d'utiliser **ropper**. Aussi, l'énonce de ROP emporium donne une information particulièrement intéressante vis à vis de l'architecture **x64**, à savoir que les arguments doivent être de 16 bytes, soit 128 bits.
 
 Vérifions tout de même que la fonction **pwnme** admet toujours un buffer vulnérable de 32 bytes avec le **BB** test:
 > binject -ns 32 A -x BBBBBBBBBBBBBBBB > test <br>

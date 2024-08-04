@@ -9,3 +9,8 @@
 ## Bank of links
 - https://blog.csdn.net/2301_76168381/article/details/136567947
 - https://github.com/joe-shenouda/awesome-cyber-skills?tab=readme-ov-file
+
+## Usefull commands
+
+- list on gdb
+- file on gdb to load an executable
